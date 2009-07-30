@@ -1,0 +1,47 @@
+Stardust COMET Server
+
+  Goals:
+  - small codebase
+  - simple deployment
+  - clean client-side code
+
+  Concepts:
+  - Message
+    In Stardust, messages plain old JSON-encoded objects.
+    The only requirement is that these objects have a 'type' attribute.
+    The 'type' attribute may be any string you'd like, and it will be
+    used to dispatch
+
+  - Channel
+    (Like IRC) this is where messages are sent.
+
+  JS Thoughts:
+
+    // This is like having controllers on the client side.
+    jQuery.stardust.subscribe(iframeOrURL, channels, {
+      EventType: function(ev) {
+      },
+      EventType2: function(ev) {
+      }
+    });
+
+    If an iframe is provided, that means we're using window.postMessage()
+    If a URL is provided, that means we're long polling.
+
+    If we're using window.postMessage(), we're going to setup a regular
+    DOM event handler for 'message' events.  The iframe will contain a
+    long-polling function.
+
+  Pragmatism:
+
+    Let's hold off on the window.postMessage() implementation.
+    Long-polling on a URL works for everybody, so let's implement that first.
+    Reverse proxying is required, but so what.  We'll have tutorials on how to
+    set that up on all the major reverse proxies out there.
+  
+    Maybe I don't need jQuery.stardust!
+    I'll just tell people to use jQuery.ev in the beginning.
+
+    If people decide that they want to use the window.postMessage() style,
+    they can set up their event handlers using whatever library they like.
+
