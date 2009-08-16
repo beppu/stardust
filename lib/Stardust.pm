@@ -138,7 +138,7 @@ our @C = (
     get => sub {
       my ($self, $channels) = @_;
       my @ch = split(/\+/, $channels);
-      encode_json([ map { my $ch = channel($_); { name => $ch->name } } @ch ]);
+      encode_json([ map { my $ch = channel($_); { name => $ch->name, subscribers => [] } } @ch ]);
     },
 
     # It should accept a JSON object and send it to the appropriate channels.

@@ -13,14 +13,17 @@ my $__help;
 my $__version;
 my $__port = 5742;
 #            STAR
-my $__base;
 my $__timeout;
+my $__base;
+my $__demo;
 
 GetOptions(
-  "help|h"    => \$__help,
-  "version|v" => \$__version,
-  "port|p=n"  => \$__port,
-  "base|b=s"  => \$__base,
+  "help|h"      => \$__help,
+  "version|v"   => \$__version,
+  "port|p=n"    => \$__port,
+  "timeout|t=n" => \$__timeout,
+  "base|b=s"    => \$__base,
+  "demo"        => \$__demo,
 );
 
 if ($__help) {
@@ -58,9 +61,16 @@ if ($__version) {
   exit;
 }
 
+if ($__demo) {
+  require Stardust::Demo;
+  Stardust->mount('Stardust::Demo' => '/demo');
+}
 Stardust->init();
 Stardust->relocate($__base) if $__base;
-Stardust->continue(port => $__port);
+Stardust->continue(
+  port    => $__port,
+  docroot => 'share',
+);
 
 __END__
 
