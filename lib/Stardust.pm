@@ -14,7 +14,7 @@ our %CONFIG = (
   channel_length => 8,           # How many messages should a channel hold on to?
   timeout        => 55,          # How many seconds before we end a long-poll request?
   port           => 5742,        # What port should Stardust listen on?
-  base           => '',          # What should the base path for Stardust's URLs be?
+  base           => '/',         # What should the base path for Stardust's URLs be?
 );
 
 package Stardust::Controllers;
@@ -103,6 +103,23 @@ sub channels_from_input {
   @ch;
 }
 
+my $html_demo = qq|
+    <h2><a href="$CONFIG{base}demo/">View the Demo</a></h2>
+|;
+
+my $html = qq|
+<html>
+  <head>
+    <title>Stardust COMET Server</title>
+  </head>
+  <body>
+    <h1>Stardust COMET Server</h1>
+    <h2><a href="http://stardust.com.et/">stardust.com.et</a></h2>
+    $html_demo
+  </body>
+</html>
+|;
+
 my $info = qq|{
   "name"     : "Stardust COMET Server",
   "language" : "Perl",
@@ -116,6 +133,14 @@ our @C = (
   # General Information
   C(
     Home => [ '/' ],
+    get => sub {
+      my ($self) = @_;
+      return $html;
+    },
+  ),
+
+  C(
+    Version => [ '/(v|version)' ],
     get => sub {
       my ($self) = @_;
       $self->headers->{'Content-Type'} = 'text/plain';
