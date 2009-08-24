@@ -1,11 +1,13 @@
 Stardust COMET Server
 
   Goals:
+
   - small codebase
   - simple deployment
   - clean client-side code
 
   Concepts:
+
   - Message
     In Stardust, messages plain old JSON-encoded objects.
     The only requirement is that these objects have a 'type' attribute.

@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use base 'Squatting';
 use IO::All;
+use Set::Object;
 
 our $VERSION = '1.00';
 
@@ -89,20 +90,6 @@ sub channel {
   $channels{$name} ||= $Channel->clone({ name => $name });
 }
 
-sub channels_from_input {
-  my ($channels) = @_;
-  my @ch;
-  if ($channels) {
-    if (ref($channels)) {
-      @ch = @{ $channels };
-    } else {
-      @ch = $channels;
-    }
-  }
-  @ch = keys %channels unless @ch;
-  @ch;
-}
-
 my $html_demo = qq|
     <h2><a href="$CONFIG{base}demo/">View the Demo</a></h2>
 |;
@@ -187,13 +174,13 @@ our @C = (
   # Message - [public]
   # This controller emits a stream of messages to long-polling clients.
   C(
-    Message => [ '/messages/(.*)' ],
+    Message => [ '/channel/([\w+]+)/stream/([.\d]+)' ],
     get => sub {
       warn "coro [$Coro::current]" if $CONFIG{debug};
-      my ($self, $random_id) = @_;
+      my ($self, $channels, $client_id) = @_;
       my $input  = $self->input;
       my $cr     = $self->cr;
-      my @ch     = channels_from_input($input->{channels});
+      my @ch     = split(/\+/, $channels);
       my $last   = time;
       while (1) {
         # Output
@@ -211,8 +198,6 @@ our @C = (
         # Hold for a brief moment until the next long poll request comes in.
         warn "waiting for next request" if ($CONFIG{debug});
         $cr->next;
-        my $channels = [ $cr->param('channels') ];
-        @ch = channels_from_input($channels);
 
         # Start 1 coro for each channel we're listening to.
         # Each coro will have the same Coro::Signal object, $activity.
