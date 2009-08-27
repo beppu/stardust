@@ -47,10 +47,11 @@ use Coro::Timer;
 use Coro::Signal;
 
 our $Channel = H->new({
-  i        => 0,                       # current position in messages array
-  size     => $CONFIG{channel_length}, # size of messages array
-  messages => [],                      # circular array of messages
-  signal   => Coro::Signal->new,       # signal that is broadcast upon write
+  i           => 0,                       # current position in messages array
+  size        => $CONFIG{channel_length}, # size of messages array
+  messages    => [],                      # circular array of messages
+  signal      => Coro::Signal->new,       # signal that is broadcast upon write
+  subscribers => [],                      # subscribed client list
 
   # write messages to this channel
   write => sub {
@@ -105,7 +106,7 @@ our $Channel = H->new({
       i           => $self->i,
       size        => $self->size,
       messages    => $self->messages,
-      subscribers => [],
+      subscribers => $self->subscribers,
     };
   },
 });
