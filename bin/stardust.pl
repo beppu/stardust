@@ -9,24 +9,27 @@ use Getopt::Long;
 # the Stardust server, so using a file extension seemed like a good
 # way to differentiate them.
 
-my $__help;
-my $__version;
-my $__port = 5742;
-#            STAR
-my $__timeout;
-my $__base;
-my $__demo;
+# my $__help;
+# my $__version;
+# my $__port = 5742;
+# #            STAR
+# my $__timeout;
+# my $__base;
+# my $__demo;
+
+my $config = \%Stardust::CONFIG;
 
 GetOptions(
-  "help|h"      => \$__help,
-  "version|v"   => \$__version,
-  "port|p=n"    => \$__port,
-  "timeout|t=n" => \$__timeout,
-  "base|b=s"    => \$__base,
-  "demo"        => \$__demo,
+  $config,
+  "help|h",
+  "version|v",
+  "port|p=n",
+  "timeout|t=n",
+  "base|b=s",
+  "demo",
 );
 
-if ($__help) {
+if ($config->{help}) {
 print qq|Stardust COMET Server $Stardust::VERSION (Perl)
   http://github.com/beppu/stardust-pl/tree/master
 
@@ -34,12 +37,15 @@ Usage: stardust.pl [OPTION]...
 
 Options:
 
-  --help, -h            This help message
-  --version, -v         What version of Stardust is this?
-  --port=NNNN, -p       What port should Stardust listen on?
-                          (default: $Stardust::CONFIG{port})
-  --base=PATH, -b       What is the base path for the Stardust URLs?
-                          (default: "$Stardust::CONFIG{base}")
+  --help, -h              This help message
+  --version, -v           What version of Stardust is this?
+  --port=NNNN, -p         What port should Stardust listen on?
+                            (default: $config->{port})
+  --base=PATH, -b         What is the base path for the Stardust URLs?
+                            (default: "$config->{base}")
+  --timeout=SECONDS, -t   Number of seconds to wait until ending a
+                            long-poll request
+                            (default: $config->{timeout})
 
 Examples:
 
@@ -56,19 +62,19 @@ Examples:
 exit;
 }
 
-if ($__version) {
+if ($config->{version}) {
   print "Stardust COMET Server $Stardust::VERSION (Perl)\n";
   exit;
 }
 
-if ($__demo) {
+if ($config->{demo}) {
   require Stardust::Demo;
   Stardust->mount('Stardust::Demo' => '/demo');
 }
 Stardust->init();
-Stardust->relocate($__base) if $__base;
+Stardust->relocate($config->{base}) if $config->{base};
 Stardust->continue(
-  port    => $__port,
+  port    => $config->{port},
   docroot => 'share',
 );
 
