@@ -95,7 +95,18 @@ our $Channel = H->new({
   # read messages since $last time
   read_since => sub {
     my ($self, $last) = @_;
-    grep { defined && ($_->{time} > $last) } $self->read($self->size);
+    grep { defined && ($_->{_ts} > $last) } $self->read($self->size);
+  },
+
+  to_hash => sub {
+    my ($self) = @_;
+    {
+      name        => $self->name,
+      i           => $self->i,
+      size        => $self->size,
+      messages    => $self->messages,
+      subscribers => [],
+    };
   },
 });
 
@@ -152,7 +163,7 @@ our @C = (
     get => sub {
       my ($self, $channels) = @_;
       my @ch = split(/\+/, $channels);
-      encode_json([ map { my $ch = channel($_); { name => $ch->name, subscribers => [] } } @ch ]);
+      encode_json([ map { my $ch = channel($_); $ch->to_hash } @ch ]);
     },
 
     # [private] It should accept a JSON object and send it to the appropriate channels.
