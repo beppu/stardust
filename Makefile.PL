@@ -7,5 +7,6 @@ requires        'Set::Object' => 0;
 requires        'aliased'     => 0;
 requires        'Tenjin'      => 0;
 install_script  'bin/stardust.pl';
+install_share;
 
 WriteAll;
