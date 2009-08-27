@@ -1,49 +1,99 @@
-Stardust COMET Server
+                                                                                          +.
+                                                                                  ..  . +%
+                              .                                            .    .  .   .. .
+                                                .                         +..- +++.m  .
+                    .                                        .         .-%m.-++*%.%+..   .
+                                                               . -    -+. .####m -.
+                                                              .+. .   ---#%-m+.. +m .
+                                                               .-  .  +mm+-.m+.m .
+                                                      + -       -. ...-%-..-. .
+                                             - .-     *-. .. . .-..-.--*.mm
+                                           . .-.-.-.-- ...-.- -%..m*#.-  .
+                                        .    .## m-+ -+%*#.-.%#.#%*#+---.
+              .  - .      - .+-. .-  -+-+.-+-.#####.-+-m#%-++-.mm-# -.
+         -  -- .. .    - ---+.+++-.*++%-#++-.###+#+#*m###*#.+ .- + -
+       .  -+-.   +-+.+m%*-*+#+m-*#*#%###*####%.##*+#m#*###%#%m%-.-. .
+    . ...... +m .#.m*-m*m###########*#######%#m+%*+m*%####%-+. .
+      .m*#%+++++ m#++##########################m+##mm####+m+  .-
+     ..##m+-m-%m +-###*######################m#+*m++ m#m.+-+-
+    .+-*+--..#..m-#############################m+%.m **- -    -.-
+     - .-+-+-.m#################################*##*#*-.*-.   % -
+      .-+# %#m##############m###########*######*#####.m..      .
+     .  m#m################*####################%##mm%++
+  .   -..-#*################################*###+##+.-.-     . .
+  ....+- +-#########################m%#%.-%*#+%####-m+-.              j
+   - #m.-%m#########################%%%++*%m%#####%#+#-- .
+   ..*#*-+#####################*##%###m%#m*########*%-.#.-.
+   - +m#*#m#########*###########m%#m#%+-#+*m#########%*#.-.
+   .+##.%#%######################*#*##-#############*%.-++
+    .. %m##############m#####%##*########%#*#######+.+.
+   .--.#m*#######*###*################%##m######%*.     .
+    -.##m+%+%#*##################+####+#######*m#+.
+   . -*#m%m**%#################################..m .             .
+    -m..#######################%####*#%##*#*+%+-
+     .-.m-m %-#########m#*########+##mm#####m-
+     . .- -.-%m%+*-######*##m*+*######%%##++.
+       .    m +m.%+++%+%######*#+mm##++-%%++..
+               ..+.-+..m.m+.-..+.-m.m.+.m%.--
+                      .+..%- . .++--. .  .
+                         .-..
 
-  Goals:
 
-  - small codebase
-  - simple deployment
-  - clean client-side code
+ .____________              _________             _____
+ .__  ___/_  /______ _____________  /___  __________  /_
+  _____ \_  __/  __ `/_  ___/  __  /_  / / /_  ___/  __/   COMET
+. ____/ // /_ / /_/ /_  /   / /_/ / / /_/ /_(__  )/ /_     Server
+ ./____/ \__/ \__,_/ /_/    \__,_/  \__,_/ /____/ \__/
 
-  Concepts:
 
-  - Message
-    In Stardust, messages plain old JSON-encoded objects.
-    The only requirement is that these objects have a 'type' attribute.
-    The 'type' attribute may be any string you'd like, and it will be
-    used to dispatch
 
-  - Channel
-    (Like IRC) this is where messages are sent.
+CONCEPTS
 
-  JS Thoughts:
+  Channel - channels are the medium through which messages travel.
 
-    // This is like having controllers on the client side.
-    jQuery.stardust.subscribe(iframeOrURL, channels, {
-      EventType: function(ev) {
-      },
-      EventType2: function(ev) {
-      }
-    });
+  Message - messages are arbitrary JSON objects.
 
-    If an iframe is provided, that means we're using window.postMessage()
-    If a URL is provided, that means we're long polling.
 
-    If we're using window.postMessage(), we're going to setup a regular
-    DOM event handler for 'message' events.  The iframe will contain a
-    long-polling function.
+  You post messages to a channel and if any clients are listening
+  (long-polling) to the stream for that channel,
+  that message will be broadcasted to them.
 
-  Pragmatism:
 
-    Let's hold off on the window.postMessage() implementation.
-    Long-polling on a URL works for everybody, so let's implement that first.
-    Reverse proxying is required, but so what.  We'll have tutorials on how to
-    set that up on all the major reverse proxies out there.
-  
-    Maybe I don't need jQuery.stardust!
-    I'll just tell people to use jQuery.ev in the beginning.
 
-    If people decide that they want to use the window.postMessage() style,
-    they can set up their event handlers using whatever library they like.
+API
+
+  GET  /
+
+    General info about the server returned as a JSON-encoded object. 
+
+
+  GET  /channel
+
+    A list of all the channel names that have been used returned as a
+    JSON-encoded array of strings.
+
+
+  GET  /channel/:names
+
+    A list of the specified channels returned as a
+    JSON-encoded array of objects.
+
+
+  POST /channel/:names
+
+    Post a message to the specified channels.
+
+    Parameters:
+
+      m   a JSON-encoded object.  If you want to send more than one
+          message in a POST, the m parameter may be repeated.
+
+
+  GET  /channel/:names/stream
+
+    Long poll on this URL to subscribe to the specified channels.
+    When messages become available, they will be returned as a
+    JSON-ecoded array of objects.
+
+
 
