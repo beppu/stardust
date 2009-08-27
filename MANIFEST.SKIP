@@ -1,4 +1,5 @@
 ^\.git
+^inc
 ^MANIFEST\.bak$
 ^Makefile$
 \..*\.swp$
