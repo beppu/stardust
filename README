@@ -54,9 +54,9 @@ CONCEPTS
   Message - messages are arbitrary JSON objects.
 
 
-  You post messages to a channel and if any clients are listening
-  (long-polling) to the stream for that channel,
-  that message will be broadcasted to them.
+  You post messages to a channel and if any clients are
+  long-polling on the stream for that channel,
+  those messages will be broadcasted to them.
 
 
 
