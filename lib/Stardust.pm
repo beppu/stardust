@@ -1,11 +1,12 @@
 package Stardust;
+use 5.008;
 use strict;
 use warnings;
 use base 'Squatting';
 use IO::All;
 use Set::Object;
 
-our $VERSION = '1.00';
+our $VERSION = '0.01';
 
 our %CONFIG = (
   debug          => 0,           # Noisy output to STDERR?
