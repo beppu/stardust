@@ -19,6 +19,20 @@ our %CONFIG = (
   base           => '/',         # What should the base path for Stardust's URLs be?
 );
 
+sub continue {
+  my ($class, @args) = @_;
+  if ($CONFIG{demo}) {
+    require Sys::Hostname;
+    my $hostname = lc Sys::Hostname::hostname();
+    my $path = "/demo/";
+    if ($CONFIG{base}) {
+      $path = "$CONFIG{base}$path";
+    }
+    print "      The demo is at: http://$hostname:$CONFIG{port}$path\n";
+  }
+  $class->next::method(@args);
+}
+
 package Stardust::Controllers;
 use strict;
 use warnings;
@@ -46,7 +60,8 @@ our $Channel = H->new({
     my $size = $self->{size};
     my $m    = $self->{messages};
     for (@messages) {
-      $_->{time} = time;
+      $_->{_ts} = time;
+      $_->{_ch} = $self->{name};
       $m->[$i++] = $_;
       $i = 0 if ($i >= $size);
     }
@@ -106,12 +121,23 @@ our @C = (
     Home => [ '/' ],
     get => sub {
       my ($self) = @_;
+      $self->log->debug(encode_json($self->env));
       $self->headers->{'Content-Type'} = 'text/plain';
       return $info;
     },
   ),
 
-  # Channel - [private]
+  # ChannelList - [public]
+  # This returns a list of all channel names currently in use.
+  C(
+    ChannelList => [ '/channel' ],
+    get => sub {
+      my ($self) = @_;
+      encode_json([ sort keys %channels ]);
+    }
+  ),
+
+  # Channel
   # To generate messages on a channel, POST a JSON object to this controller
   # using the CGI variable 'm'.
   #
@@ -122,14 +148,14 @@ our @C = (
   C(
     Channel => [ '/channel/([\w+]+)' ],
 
-    # It should return a list of channel objects. 
+    # [public] It should return a list of channel objects.
     get => sub {
       my ($self, $channels) = @_;
       my @ch = split(/\+/, $channels);
       encode_json([ map { my $ch = channel($_); { name => $ch->name, subscribers => [] } } @ch ]);
     },
 
-    # It should accept a JSON object and send it to the appropriate channels.
+    # [private] It should accept a JSON object and send it to the appropriate channels.
     post => sub {
       my ($self, $channels) = @_;
       my $m = $self->input->{m};
@@ -223,13 +249,13 @@ Installing Stardust:
 
 Running the COMET server on port 5555:
 
-  $ stardust.pl -p 5555 --relocate '/comet'
+  $ stardust.pl --port=5555 --base=/comet
 
 Making pages subscribe to channel 'foo':
 
   <script>
     var uniqueId = Math.random().toString();
-    $.ev.loop('/comet/messages/'+uniqueId, [ 'foo' ], {
+    $.ev.loop('/comet/channel/foo/'+uniqueId, {
       "*": function(ev) {
       }
     });
@@ -238,16 +264,22 @@ Making pages subscribe to channel 'foo':
 Posting JSON messages to channel 'foo':
 
   curl -d 'm={ "type": "TestMessage", "data": [3, 2, 1] }' \
-    http://localhost:5555/channel/foo
-  
+    http://localhost:5555/comet/channel/foo
+
 =head1 DESCRIPTION
 
-=head2 How to Integrate Stardust Into an Existing Web Application
+Stardust is a simple COMET server that can be integrated alongside existing
+web applications.
 
-=head2 Client-side Javascript Libraries for Long Polling
 
+=head1 CONCEPTS
 
-=head2 Ambient Messages from the Server Side
+=head2 Message
+
+=head2 Channel
+
+=head2 Long Polling
+
 
 
 =head1 API
@@ -260,13 +292,65 @@ The following URLs represent your API.
 This is just a little informational JSON-encoded data that tells you what
 version of the Stardust server you're using.
 
+=head2 GET  /channel
+
+This returns a list of all the channel names currently in use as a
+JSON-encoded array of strings.
+
 =head2 GET  /channel/([\w+]+)
+
+This returns info about the specified channels as a JSON-encoded
+array of objects.
 
 =head2 POST /channel/([\w+]+)
 
-=head2 GET  /messages/(.*)
+This allows one to send a message to the specified channels.
+
+B<Parameters>:
+
+=over 4
+
+=item m
+
+an JSON-encoded object.  This parameter may be repeated if you want to
+send more than one message per POST request.
+
+=back
+
+=head2 GET  /channel/([\w+]+)/stream
+
+Long poll on this URL to receive a stream of messages as they become available.
+They will come back to you as a JSON-encoded array of objects.
 
 =head1 CONFIGURATION
+
+=head2 nginx static + stardust
+
+  upstream stardust_com_et {
+    server 127.0.0.1:5742;
+  }
+
+  server {
+    listen 80;
+    server_name stardust.com.et;
+    location / {
+      root   /thttpd/stardust.com.et;
+      index  index.html index.htm;
+    }
+    location /comet {
+      proxy_pass http://stardust_com_et;
+    }
+  }
+
+=head2 nginx fastcgi + stardust
+
+=head2 nginx reverse proxy + stardust
+
+=head2 apache2 static + stardust
+
+=head2 apache2 fastcgi + stardust
+
+=head2 apache2 reverse proxy + stardust
 
 =head1 AUTHOR
 
