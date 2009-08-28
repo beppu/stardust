@@ -8,6 +8,7 @@ requires        'Sys::Hostname'  => 0;
 requires        'aliased'        => 0;
 requires        'Tenjin'         => 0;
 requires        'AnyEvent::HTTP' => 0;
+requires        'File::ShareDir' => 0;
 install_script  'bin/stardust.pl';
 install_share;
 

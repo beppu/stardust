@@ -49,7 +49,13 @@ our @V = (
             <script src="/js/demo.js"></script>
           </head>
           <body>
-            <h1>What shall I wow the audience with?</h1>
+<pre>
+curl -d 'm={ "type": "Greeting", "message": "Hello, World" }' http://localhost:5742/comet/channel/foo
+curl -d 'm={ "type": "Color", "color": "#dea" }' http://localhost:5742/comet/channel/foo
+</pre>
+            <h1>Events</h1>
+            <ul id="events">
+            </ul>
           </body>
         </html>
       |;

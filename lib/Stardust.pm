@@ -5,6 +5,7 @@ use warnings;
 use base 'Squatting';
 use IO::All;
 use Set::Object;
+use File::ShareDir ':ALL';
 
 our $VERSION = '0.01';
 
@@ -30,7 +31,7 @@ sub continue {
     }
     print "      The demo is at: http://$hostname:$CONFIG{port}$path\n";
   }
-  $class->next::method(@args);
+  $class->next::method(@args, docroot => dist_dir('Stardust'));
 }
 
 package Stardust::Controllers;
@@ -133,7 +134,6 @@ our @C = (
     Home => [ '/' ],
     get => sub {
       my ($self) = @_;
-      $self->log->debug(encode_json($self->env));
       $self->headers->{'Content-Type'} = 'text/plain';
       return $info;
     },
