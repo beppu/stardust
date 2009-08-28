@@ -23,7 +23,8 @@ our @C = (
     post => sub {
       my ($self) = @_;
       my $message = $self->input->{message};
-      http_post $stardust, "message=$message";
+      my $ch = Stardust::Controllers::channel('foo');
+      $ch->write({ type => 'Greeting', message => $message });
     },
   ),
   C(
@@ -31,7 +32,6 @@ our @C = (
     post => sub {
       my ($self) = @_;
       my $color = $self->input->{color};
-      http_post $stardust, "color=$color";
     },
   ),
   C(
