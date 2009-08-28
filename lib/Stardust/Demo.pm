@@ -5,6 +5,10 @@ use base 'Squatting';
 
 package Stardust::Demo::Controllers;
 use Squatting ':controllers';
+use AnyEvent::HTTP;
+
+# XXX HACK XXX
+my $stardust = "http://localhost:5742/comet/channel/foo";
 
 our @C = (
   C(
@@ -15,12 +19,19 @@ our @C = (
     },
   ),
   C(
-    Background => [ '/background' ],
-    get => sub {
-      my ($self) = @_;
-    },
+    Greeting => [ '/greeting' ],
     post => sub {
       my ($self) = @_;
+      my $message = $self->input->{message};
+      http_post $stardust, "message=$message";
+    },
+  ),
+  C(
+    Background => [ '/background' ],
+    post => sub {
+      my ($self) = @_;
+      my $color = $self->input->{color};
+      http_post $stardust, "color=$color";
     },
   ),
   C(
