@@ -89,7 +89,7 @@ API
           message in a POST, the m parameter may be repeated.
 
 
-  GET  /channel/:names/stream
+  GET  /channel/:names/stream/:client_id
 
     Long poll on this URL to subscribe to the specified channels.
     When messages become available, they will be returned as a

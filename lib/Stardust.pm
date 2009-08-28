@@ -329,7 +329,7 @@ send more than one message per POST request.
 
 =back
 
-=head2 GET  /channel/([\w+]+)/stream
+=head2 GET  /channel/([\w+]+)/stream/([.\d]+)
 
 Long poll on this URL to receive a stream of messages as they become available.
 They will come back to you as a JSON-encoded array of objects.
