@@ -9,6 +9,7 @@ requires        'aliased'        => 0;
 requires        'Tenjin'         => 0;
 requires        'AnyEvent::HTTP' => 0;
 requires        'File::ShareDir' => 0;
+requires        'JSON'           => 0;
 install_script  'bin/stardust.pl';
 install_share;
 
