@@ -18,12 +18,13 @@
     timeout  : null,
 
     run: function(events) {
-      var i;
+      var i, e, h; // index, event, handler
       for (i = 0; i < events.length; i++) {
-        var e = events[i];
+        e = events[i];
         if (!e) continue;
-        var h = this.handlers[e.type];
-        if (h) h(e);
+        h = this.handlers[e.type];
+        if (!h) h = this.handlers['*'];
+        if ( h) h(e);
       }
     },
 
@@ -52,7 +53,13 @@
     loop: function(url, handlers) {
       var self = this;
       if (handlers) {
-        this.handlers = handlers;
+        if (typeof handlers == "object") {
+          this.handlers = handlers;
+        } else if (typeof handlers == "function") {
+          this.run = handlers;
+        } else {
+          throw("handlers must be an object or function");
+        }
       }
       this.running = true;
       this.xhr = $.ajax({
@@ -72,9 +79,8 @@
             // console.log('status: ' + status, '; waiting before long-polling again...');
             delay = 5000;
           }
-          window.setTimeout(function(){
-            if (self.running) self.loop(url);
-          }, delay);
+          // "recursively" loop
+          window.setTimeout(function(){ if (self.running) self.loop(url); }, delay);
         }
       });
     }

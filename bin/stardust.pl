@@ -67,11 +67,11 @@ if ($config->{version}) {
   exit;
 }
 
+Stardust->init();
 if ($config->{demo}) {
   require Stardust::Demo;
   Stardust->mount('Stardust::Demo' => '/demo');
 }
-Stardust->init();
 Stardust->relocate($config->{base}) if $config->{base};
 Stardust->continue(
   port    => $config->{port},
