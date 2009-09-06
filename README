@@ -50,6 +50,7 @@
 CONCEPTS
 
   Channel - channels are the medium through which messages travel.
+            The moment you try to use one, it will be autovivified for you.
 
   Message - messages are arbitrary JSON objects.
 
@@ -77,6 +78,8 @@ API
 
     A list of the specified channels returned as a
     JSON-encoded array of objects.
+
+    (:names is "+" separated string of channel names)
 
 
   POST /channel/:names
