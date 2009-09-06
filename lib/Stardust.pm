@@ -17,7 +17,7 @@ our %CONFIG = (
   channel_length => 8,           # How many messages should a channel hold on to?
   timeout        => 55,          # How many seconds before we end a long-poll request?
   port           => 5742,        # What port should Stardust listen on?
-  base           => '/',         # What should the base path for Stardust's URLs be?
+  base           => '',          # What should the base path for Stardust's URLs be?
 );
 
 sub continue {
