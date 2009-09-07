@@ -2,19 +2,18 @@ package Stardust::Demo;
 use strict;
 use warnings;
 use base 'Squatting';
+use Data::Dump 'pp';
 
 package Stardust::Demo::Controllers;
 use Squatting ':controllers';
 use AnyEvent::HTTP;
-
-# XXX HACK XXX
-my $stardust = "http://localhost:5742/comet/channel/foo";
 
 our @C = (
   C(
     Home => [ '/' ],
     get => sub {
       my ($self) = @_;
+      $self->v->{base} = $Stardust::CONFIG{base};
       $self->render('home');
     },
   ),
@@ -45,47 +44,47 @@ our @C = (
 );
 
 package Stardust::Demo::Views;
+use strict;
+use warnings;
+no  warnings 'once';
 use Squatting ':views';
+use File::ShareDir;
+use Tenjin;
+use Encode;
+use base 'Tenjin::Context';
+{
+  no warnings;
+  eval $Tenjin::Context::defun;
+}
+*escape = sub {
+  my ($s) = @_;
+  $s = encode('utf8', $s);
+  $s =~ s/[&<>"]/$Tenjin::Helper::Html::_escape_table{$&}/ge if ($s);
+  return $s;
+};
+$Tenjin::CONTEXT_CLASS = 'Stardust::Demo::Views';
+
+my $template_path = File::ShareDir::dist_dir('Stardust');
+
+our $tenjin = Tenjin::Engine->new({
+  path    => [ $template_path ],
+  postfix => '.html',
+  cache   => 0,
+});
+
 our @V = (
   V(
-    'default',
-    home => sub {
-      my ($self, $v) = @_;
-      qq|
-        <html>
-          <head>
-            <title>Stardust::Demo</title>
-            <script src="/js/fx.js"></script>
-            <script src="/js/jquery-1.3.2.js"></script>
-            <script src="/js/jquery.color.js"></script>
-            <script src="/js/jquery.ev.js"></script>
-            <script src="/js/demo.js"></script>
-          </head>
-          <body>
-<pre>
-curl -d 'm={ "type": "Greeting", "message": "Hello, World" }' http://localhost:5742/comet/channel/foo
-curl -d 'm={ "type": "Color", "color": "#dea" }' http://localhost:5742/comet/channel/foo
-</pre>
-            <h1 id="title">Events</h1>
-            <ul id="events">
-            </ul>
-          </body>
-        </html>
-      |;
+    'tenjin',
+    layout => sub {
+      my ($self, $v, $content) = @_;
+      $v->{content} = $content;
+      $tenjin->render(":layout", $v);
     },
-    404 => sub {
+    _ => sub {
       my ($self, $v) = @_;
-      qq|
-        <html>
-          <head>
-            <title>???</title>
-          </head>
-          <body>
-            No lo tengo.
-          </body>
-        </html>
-      |;
-    },
+      $v->{self} = $self;
+      $tenjin->render(":$self->{template}", $v);
+    }
   ),
 );
 

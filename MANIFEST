@@ -22,10 +22,13 @@ MANIFEST			This list of files
 MANIFEST.SKIP
 META.yml
 README
+share/home.html
 share/js/demo.js
+share/js/fx.js
 share/js/jquery-1.3.2.js
 share/js/jquery.color.js
 share/js/jquery.ev.js
 share/js/json2.js
+share/layout.html
 share/test.html
 t/00_basic.t

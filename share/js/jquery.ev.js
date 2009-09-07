@@ -1,4 +1,4 @@
-/* Title: jQuery ev
+/* Title: jQuery.ev
  *
  * A COMET event loop for jQuery
  *
@@ -17,14 +17,19 @@
     verbose  : true,
     timeout  : null,
 
-    run: function(events) {
-      var i, e, h; // index, event, handler
-      for (i = 0; i < events.length; i++) {
-        e = events[i];
-        if (!e) continue;
-        h = this.handlers[e.type];
+    /* Method: run
+     *
+     * Respond to an array of messages using the object in this.handlers
+     *
+     */
+    run: function(messages) {
+      var i, m, h; // index, event, handler
+      for (i = 0; i < messages.length; i++) {
+        m = messages[i];
+        if (!m) continue;
+        h = this.handlers[m.type];
         if (!h) h = this.handlers['*'];
-        if ( h) h(e);
+        if ( h) h(m);
       }
     },
 
@@ -41,11 +46,13 @@
       this.running = false;
     },
 
-    /* 
+    /*
      * Method: loop
      *
+     * Long poll on a URL
+     *
      * Arguments:
-     * 
+     *
      *   url
      *   handler
      *
@@ -67,9 +74,9 @@
         dataType : 'json',
         url      : url,
         timeout  : self.timeout,
-        success  : function(events, status) {
-          // console.log('success', events);
-          self.run(events)
+        success  : function(messages, status) {
+          // console.log('success', messages);
+          self.run(messages)
         },
         complete : function(xhr, status) {
           var delay;
