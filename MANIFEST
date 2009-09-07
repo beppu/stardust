@@ -3,6 +3,7 @@ bin/stardust.pl
 Changes
 doc/monta-label.png
 doc/stardust-at-la-pm.xul
+doc/stardust-at-yapc-asia.xul
 doc/takahashi.css
 doc/takahashi.xul
 inc/Module/Install.pm
