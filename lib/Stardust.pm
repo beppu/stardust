@@ -364,6 +364,30 @@ They will come back to you as a JSON-encoded array of objects.
 
 =head2 apache2 reverse proxy + stardust
 
+=head1 SEE ALSO
+
+=over 4
+
+=item GitHub Repository
+
+L<http://github.com/beppu/stardust/tree/master>
+
+=item jQuery.ev
+
+L<http://github.com/beppu/jquery-ev/tree/master>
+
+=item AnyEvent, Coro, Continuity
+
+L<AnyEvent>, L<Coro>, L<Continuity>
+
+=item Squatting
+
+L<Squatting>
+
+L<http://groups.google.com/group/squatting-framework>
+
+=back
+
 =head1 AUTHOR
 
 John BEPPU E<lt>beppu@cpan.orgE<gt>
