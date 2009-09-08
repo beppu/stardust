@@ -1,11 +1,47 @@
 jQuery(function(){
-  var clientId = Math.random().toString().replace(/\./, '');
-  jQuery.ev.loop($base+'/channel/foo+bar+baz/stream/'+clientId, {
-    Greeting: function(ev){
-      jQuery('#events').prepend('<li>'+ev.message+'</li>');
+
+  jQuery('h4').toggle(
+    function(ev){
+      jQuery('#js').show('fast');
+      jQuery('h4 span').html('Hide');
     },
-    Color: function(ev){
-      jQuery('body').css({ backgroundColor: ev.color });
+    function(ev){
+      jQuery('#js').hide('fast');
+      jQuery('h4 span').html('Show');
     }
-  });
+  );
+
+  var clientId = Math.random().toString().replace(/\./, '');
+  if ($demo == "CurlCommands") {
+    jQuery.ev.loop($base+'/channel/curl_commands/stream/'+clientId, {
+      Greeting: function(m){
+        jQuery('#messages').prepend('<li>'+m.message+'</li>');
+      },
+      Color: function(m){
+        jQuery('body').css({ backgroundColor: m.color });
+      },
+      '*': function(m){
+        try {
+          jQuery('#messages').prepend('<li>'+m.toSource()+'</li>');
+        }
+        catch(e) { }
+      }
+    });
+  } else if ($demo == 'ColorfulBoxes') {
+    jQuery.ev.loop($base+'/channel/colorful_boxes/stream/'+clientId, {
+      ColorBox: function(m){
+        try {
+          console.log(m.toSource());
+        }
+        catch(e){ }
+        jQuery('#'+m.id).css({ backgroundColor: m.color }); }
+    });
+    jQuery('td.box').mouseover(function(ev){
+      $.post($base+'/demo/colorful_boxes', { id: this.id }, function(response){
+        console.log(response);
+      });
+    })
+  } else {
+    // console.log('no demo');
+  }
 });

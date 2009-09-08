@@ -1,0 +1,29 @@
+<h4><span>Show</span> Javascript</h4>
+<pre id="js" style="display: none">
+  jQuery.ev.loop($base+'/channel/curl_commands/stream/'+clientId, {
+    Greeting: function(ev){
+      jQuery('#messages').prepend('&lt;li&gt;'+ev.message+'&lt;/li&gt;');
+    },
+    Color: function(ev){
+      jQuery('body').css({ backgroundColor: ev.color });
+    },
+    '*': function(ev){
+      try {
+        jQuery('#messages').prepend('&lt;li&gt;'+ev.toSource()+'&lt;/li&gt;');
+      }
+      catch(e) {
+      }
+    }
+  });
+</pre>
+<h2 id="title">Curl Commands</h2>
+<pre>
+  curl -d 'm={ "type": "Greeting", "message": "Hello, World" }' http://localhost:5742[= $base =]/channel/curl_commands
+  curl -d 'm={ "type": "Color", "color": "#dea" }'              http://localhost:5742[= $base =]/channel/curl_commands
+  curl -d 'm={ "whatever": "Undefined", "xxx": 5 }'             http://localhost:5742[= $base =]/channel/curl_commands
+</pre>
+<pre>
+</pre>
+<ul id="messages">
+</ul>
+

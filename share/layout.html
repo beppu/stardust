@@ -3,6 +3,7 @@
     <title>Stardust::Demo</title>
     <script>
       var $base = "[== $base =]";
+      var $demo = "[== $demo =]";
     </script>
     <script src="/js/fx.js"></script>
     <script src="/js/jquery-1.3.2.js"></script>
@@ -11,7 +12,10 @@
     <script src="/js/demo.js"></script>
   </head>
   <body>
-    [== $content =]
+    <h1><a href="[== R('Home') =]">Stardust Demos</a></h1>
+    <div id="content">
+      [== $content =]
+    </div>
   </body>
 </html>
 

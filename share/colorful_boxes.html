@@ -1,0 +1,30 @@
+<h4><span>Show</span> Javascript</h4>
+<pre id="js" style="display: none">
+  jQuery.ev.loop($base+'/channel/colorful_boxes/stream/'+clientId, {
+    ColorBox: function(m){
+      try {
+        console.log(m.toSource());
+      }
+      catch(e){ }
+      jQuery('#'+m.id).css({ backgroundColor: m.color }); }
+  });
+  jQuery('td.box').mouseover(function(ev){
+    $.post($base+'/demo/colorful_boxes', { id: this.id }, function(response){
+      console.log(response);
+    });
+  })
+</pre>
+<h2>Colorful Boxes</h2>
+<table id="boxes" width="100%">
+<?pl for my $i (0 .. $boxes->rows) { ?>
+  <tr>
+<?pl
+      for my $j (0 .. $boxes->columns) { 
+        my $id = "box-$j-$i";
+?>
+    <td class="box" id="[== $id =]" style="background-color: #dea">&nbsp;</td>
+<?pl   } ?>
+  </tr>
+<?pl } ?>
+</table>
+

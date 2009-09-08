@@ -23,6 +23,9 @@ MANIFEST			This list of files
 MANIFEST.SKIP
 META.yml
 README
+share/404.html
+share/colorful_boxes.html
+share/curl_commands.html
 share/home.html
 share/js/demo.js
 share/js/fx.js

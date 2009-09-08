@@ -7,7 +7,15 @@ use Data::Dump 'pp';
 package Stardust::Demo::Controllers;
 use Squatting ':controllers';
 use AnyEvent::HTTP;
+use JSON;
 use Data::Dump 'pp';
+use aliased 'Squatting::H';
+
+our $boxes = H->new({
+  columns => 8,
+  rows    => 16,
+  map     => [],
+});
 
 our %C;
 our @C = (
@@ -15,31 +23,63 @@ our @C = (
     Home => [ '/' ],
     get => sub {
       my ($self) = @_;
-      $self->v->{base} = $Stardust::CONFIG{base};
+      my $v = $self->v;
+      $v->{demo} = 0;
+      $v->{base} = $Stardust::CONFIG{base};
       $self->render('home');
     },
   ),
+
+  # Run curl commands to see servers making requests to clients
   C(
     CurlCommands => [ '/curl_commands' ],
     get => sub {
       my ($self) = @_;
-      $self->v->{base} = $Stardust::CONFIG{base};
+      my $v = $self->v;
+      $v->{demo} = $self->name;
+      $v->{base} = $Stardust::CONFIG{base};
       $self->render('curl_commands');
     },
   ),
+
   C(
     ColorfulBoxes => [ '/colorful_boxes' ],
     get => sub {
       my ($self) = @_;
-      $self->v->{base} = $Stardust::CONFIG{base};
-      $self->render('movable_sprites');
+      my $v = $self->v;
+      $v->{demo}  = $self->name;
+      $v->{base}  = $Stardust::CONFIG{base};
+      $v->{boxes} = $boxes;
+      $self->render('colorful_boxes');
     },
+    post => sub {
+      my ($self) = @_;
+      my $input = $self->input;
+      my $base = $Stardust::CONFIG{base};
+      my $id = $self->input->{id};
+      my $url = "http://localhost:5742".Stardust::Controllers::R('Channel', 'colorful_boxes'),
+      my $body = "m=".encode_json({
+        type  => "ColorBox",
+        id    => $id,
+        color => $input->{color} || "#ccf",
+      });
+      http_post(
+        $url,
+        $body,
+        sub {  }
+      );
+      warn "post";
+    }
   ),
+
   C(
     404 => [ '/(.+)' ],
     get => sub {
       my ($self, $path) = @_;
-      $self->v->{path} = $path;
+      my $v = $self->v;
+      $v->{demo} = 0;
+      $v->{path} = $path;
+      $v->{base} = $Stardust::CONFIG{base};
       $self->status = 404;
       $self->render(404);
     }
