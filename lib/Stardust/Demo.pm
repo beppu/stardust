@@ -130,6 +130,9 @@ use Encode;
 };
 $Tenjin::CONTEXT_CLASS = 'Stardust::Demo::Views';
 
+# XXX - terrible hack
+*Tenjin::Context::R = \&R;
+
 my $template_path = File::ShareDir::dist_dir('Stardust');
 
 our $tenjin = Tenjin::Engine->new({
