@@ -7,7 +7,9 @@ use Data::Dump 'pp';
 package Stardust::Demo::Controllers;
 use Squatting ':controllers';
 use AnyEvent::HTTP;
+use Data::Dump 'pp';
 
+our %C;
 our @C = (
   C(
     Home => [ '/' ],
@@ -18,27 +20,28 @@ our @C = (
     },
   ),
   C(
-    Greeting => [ '/greeting' ],
-    post => sub {
+    CurlCommands => [ '/curl_commands' ],
+    get => sub {
       my ($self) = @_;
-      my $message = $self->input->{message};
-      my $ch = Stardust::Controllers::channel('foo');
-      $ch->write({ type => 'Greeting', message => $message });
+      $self->v->{base} = $Stardust::CONFIG{base};
+      $self->render('curl_commands');
     },
   ),
   C(
-    Background => [ '/background' ],
-    post => sub {
+    ColorfulBoxes => [ '/colorful_boxes' ],
+    get => sub {
       my ($self) = @_;
-      my $color = $self->input->{color};
+      $self->v->{base} = $Stardust::CONFIG{base};
+      $self->render('movable_sprites');
     },
   ),
   C(
-    404 => [ '/(.*)' ],
+    404 => [ '/(.+)' ],
     get => sub {
       my ($self, $path) = @_;
-      $self->status(404);
-      $self->render('404');
+      $self->v->{path} = $path;
+      $self->status = 404;
+      $self->render(404);
     }
   ),
 );
@@ -47,11 +50,11 @@ package Stardust::Demo::Views;
 use strict;
 use warnings;
 no  warnings 'once';
+use base 'Tenjin::Context';
 use Squatting ':views';
 use File::ShareDir;
 use Tenjin;
 use Encode;
-use base 'Tenjin::Context';
 {
   no warnings;
   eval $Tenjin::Context::defun;

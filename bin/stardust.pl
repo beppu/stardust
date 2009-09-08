@@ -47,6 +47,8 @@ Options:
                             long-poll request
                             (default: $config->{timeout})
 
+  --demo                  Mount the demo application on \$base/demo/
+
 Examples:
 
   Run Stardust on port 5555 with all URLs prefixed with "/comet":
@@ -67,12 +69,12 @@ if ($config->{version}) {
   exit;
 }
 
-Stardust->init();
 if ($config->{demo}) {
-  require Stardust::Demo;
+  eval "use Stardust::Demo";
   Stardust->mount('Stardust::Demo' => '/demo');
 }
 Stardust->relocate($config->{base}) if $config->{base};
+Stardust->init();
 Stardust->continue(
   port    => $config->{port},
   docroot => 'share',

@@ -221,7 +221,7 @@ our @C = (
           async { $ch->signal->wait; $activity->broadcast };
         } @ch;
 
-        # when running this behind a reverse proxy,
+        # When running this behind a reverse proxy,
         # it's useful to timeout before your proxy kills the connection.
         push @coros, async {
           my $timeout = Coro::Timer::timeout $CONFIG{timeout};
