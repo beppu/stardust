@@ -1,4 +1,8 @@
-0.03
+0.04 2009-09-08
+  - trying to sort out Module::Install madness.
+  - added a disgusting hack to make Tenjin cooperate.
+
+0.03 2009-09-08
   - added a more compelling demo, I hope.
     Try doing `stardust.pl --demo` and see if you like it.
 

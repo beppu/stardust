@@ -7,7 +7,7 @@ use IO::All;
 use Set::Object;
 use File::ShareDir ':ALL';
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 our %CONFIG = (
   debug          => 0,           # Noisy output to STDERR?
