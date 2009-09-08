@@ -9,9 +9,8 @@
       jQuery('#'+m.id).css({ backgroundColor: m.color }); }
   });
   jQuery('td.box').mouseover(function(ev){
-    $.post($base+'/demo/colorful_boxes', { id: this.id }, function(response){
-      console.log(response);
-    });
+    var color = jQuery('#color-picker input').val() || '#ccf';
+    jQuery.post($base+'/demo/colorful_boxes', { id: this.id, color: color }, function(response){ });
   })
 </pre>
 <form id="color-picker">
@@ -23,8 +22,9 @@
 <?pl
       for my $j (0 .. $boxes->columns) { 
         my $id = "box-$j-$i";
+        # my $box = $boxes->map->[$j]->[$i];
 ?>
-    <td class="box" id="[== $id =]" style="background-color: #dea">&nbsp;</td>
+    <td class="box" id="[== $id =]" style="background-color: #dea;">&nbsp;</td>
 <?pl   } ?>
   </tr>
 <?pl } ?>

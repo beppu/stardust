@@ -11,11 +11,30 @@ use JSON;
 use Data::Dump 'pp';
 use aliased 'Squatting::H';
 
+our $Box = H->new({
+  id    => "",
+  color => "#dea",
+});
+
 our $boxes = H->new({
   columns => 8,
   rows    => 16,
   map     => [],
+  init    => sub {
+    my ($self) = @_;
+    $self->map([]);
+    my $rows = $self->rows;
+    my $columns = $self->columns;
+    for my $i (0 .. $rows) {
+      for my $j (0 .. $columns) {
+        my $id = "box-$i-$j";
+        $self->map->[$i]->[$j] = $Box->clone({ id => $id });
+      }
+    }
+  }
 });
+
+$boxes->init;
 
 our %C;
 our @C = (
@@ -56,12 +75,16 @@ our @C = (
       my ($self) = @_;
       my $input = $self->input;
       my $base = $Stardust::CONFIG{base};
-      my $id = $self->input->{id};
+      my $color = $input->{color} || "#ccf";
       my $url = "http://localhost:5742".Stardust::Controllers::R('Channel', 'colorful_boxes'),
+      my $id = $self->input->{id};
+      my ($blah, $x, $y) = split('-', $id);
+      # my $box = $boxes->map->[$y]->[$x];
+      # $box->color($color);
       my $body = "m=".encode_json({
         type  => "ColorBox",
         id    => $id,
-        color => $input->{color} || "#ccf",
+        color => $color,
       });
       http_post(
         $url,

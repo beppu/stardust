@@ -38,9 +38,7 @@ jQuery(function(){
     });
     jQuery('td.box').mouseover(function(ev){
       var color = jQuery('#color-picker input').val() || '#ccf';
-      jQuery.post($base+'/demo/colorful_boxes', { id: this.id, color: color }, function(response){
-        console.log(response);
-      });
+      jQuery.post($base+'/demo/colorful_boxes', { id: this.id, color: color }, function(response){ });
     })
   } else {
     // console.log('no demo');
