@@ -37,7 +37,8 @@ jQuery(function(){
         jQuery('#'+m.id).css({ backgroundColor: m.color }); }
     });
     jQuery('td.box').mouseover(function(ev){
-      $.post($base+'/demo/colorful_boxes', { id: this.id }, function(response){
+      var color = jQuery('#color-picker input').val() || '#ccf';
+      jQuery.post($base+'/demo/colorful_boxes', { id: this.id, color: color }, function(response){
         console.log(response);
       });
     })
