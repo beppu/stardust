@@ -1,3 +1,6 @@
+0.03
+  - added a more compelling demo, I hope.
+    Try doing `stardust.pl --demo` and see if you like it.
 
 0.02 2009-09-02
   - added inc directory to dist
