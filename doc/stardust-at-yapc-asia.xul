@@ -50,23 +50,19 @@
 
 <html:textarea id="builtinCode" style="visibility: collapse">
 TITLE::Stardust COMET Server
+HEADER::YAPC::Asia 2009
 Stardust
-COMET
-Server
+a simple COMET Server
+FOOTER::by John BEPPU
 ----
-HEADER::Goals
-Easy to use
-----
-Useful to non-Perl users
+HEADER:: 
+What is COMET?
+COMETってなに？
+FOOTER::
 ----
 HEADER::Concepts
-Concepts
-FOOTER::A few things you should understand.
-----
 Messages
-----
 Channels
-----
 Long Polling
 ----
 HEADER::HTTP API
@@ -101,7 +97,7 @@ HEADER::POST /channel/:names
 This sends messages
 to the specified channels.
 ***
-チャンネルにメセジを送る
+チャンネルにメッセージを送る
 ----
 HEADER::GET /channel/:names/stream/:client_id
 Long polling on this URL will
@@ -109,7 +105,7 @@ let you get messages from the
 specified channels as they become
 available
 ***
-Long-pollしながらチャンネルからメセジをもらう
+Long-pollしながらチャンネルからメッセージをもらう
 ----
 HEADER::Configuration
 [[PRE:#
@@ -118,38 +114,44 @@ HEADER::Configuration
 
 server {
   listen 80;
-  server_name stardust.com.et;
+  server_name example.com;
   location / {
-    root   /thttpd/stardust.com.et;
+    root   /www/example.com;
     index  index.html index.htm;
   }
-  #                                  #
-  #                                  #
-  #                                  #
+  #                            #
+  #                            #
+  #                            #
 }:PRE]]
 FOOTER::ngingx static
 ----
-[[PRE:upstream stardust_com_et {
+[[PRE:upstream stardust {
   server 127.0.0.1:5742;
 }
 
 server {
   listen 80;
-  server_name stardust.com.et;
+  server_name example.com;
   location / {
-    root   /thttpd/stardust.com.et;
+    root   /www/example.com;
     index  index.html index.htm;
   }
   location /comet {
-    proxy_pass http://stardust_com_et;
+    proxy_pass http://stardust;
   }
 }:PRE]]
 FOOTER::ngingx static + stardust
 ----
 HEADER::
 FOOTER::
-説明
-おわり
+Apacheでも
+これみたいな
+configをできると思う。
+----
+DEMO
+----
+http://bavl.org:5742/demo/
+----
 </html:textarea>
 
 
