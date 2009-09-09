@@ -55,15 +55,21 @@ Stardust
 a simple COMET Server
 FOOTER::by John BEPPU
 ----
-HEADER:: 
-What is COMET?
-COMETってなに？
+HEADER::my $self;
+CPAN ID: BEPPU
+[[http://search.cpan.org/~beppu]]
+[[http://github.com/beppu]]
 FOOTER::
+----
+HEADER::
+What is COMET?
+COMETって何?
+FOOTER::Server Push
 ----
 HEADER::Concepts
 Messages
 Channels
-Long Polling
+FOOTER::IRCみたい
 ----
 HEADER::HTTP API
 [[PRE:GET  /
@@ -71,7 +77,7 @@ GET  /channel
 GET  /channel/:names
 POST /channel/:names
 GET* /channel/:names/stream/:client_id:PRE]]
-FOOTER::
+FOOTER::すべてJSONとHTTPでやっている。
 ----
 HEADER::GET /
 This returns info about the server 
@@ -150,7 +156,7 @@ configをできると思う。
 ----
 DEMO
 ----
-http://bavl.org:5742/demo/
+[[http://bavl.org:5742/demo/]]
 ----
 </html:textarea>
 
