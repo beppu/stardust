@@ -56,17 +56,18 @@ a simple COMET Server
 FOOTER::by John BEPPU
 ----
 HEADER::my $self;
+John Beppu
 CPAN ID: BEPPU
 [[http://search.cpan.org/~beppu]]
 [[http://github.com/beppu]]
-FOOTER::
+FOOTER::la.pm (Los Angeles)
 ----
 HEADER::
 What is COMET?
 COMETって何?
 FOOTER::Server Push
 ----
-HEADER::
+HEADER::Stardust is built on top of:
 AnyEvent,
 Coro,
 Continuity
@@ -83,7 +84,7 @@ GET  /channel
 GET  /channel/:names
 POST /channel/:names
 GET* /channel/:names/stream/:client_id:PRE]]
-FOOTER::すべてJSONとHTTPでやっている。
+FOOTER::JSONとHTTP
 ----
 HEADER::GET /
 This returns info about the server 
@@ -165,9 +166,18 @@ HEADER::Download
 [[http://github.com/beppu/stardust/tree/master]]
 ----
 HEADER::
+DEMO
+FOOTER::
+----
+HEADER::ごめんなさい。
+Internet Explorerを
+使わないでください。
+FOOTER::BUGがある。 :(
+----
+HEADER::
 stardust.pl --demo
 [[http://stardust.bavl.org/demo/]]
-FOOTER::IEを使わないでください
+FOOTER::!!! IEを使わないでください !!!
 </html:textarea>
 
 
