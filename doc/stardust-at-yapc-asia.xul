@@ -49,7 +49,7 @@
 
 
 <html:textarea id="builtinCode" style="visibility: collapse">
-TITLE::Stardust COMET Server
+TITLE::Stardust - a simple COMET server
 HEADER::YAPC::Asia 2009
 Stardust
 a simple COMET Server
@@ -154,9 +154,14 @@ Apacheでも
 これみたいな
 configをできると思う。
 ----
-DEMO
+HEADER::Download
+[[http://search.cpan.org/dist/Stardust/]]
+[[http://github.com/beppu/stardust/tree/master]]
 ----
-[[http://bavl.org:5742/demo/]]
+HEADER::
+stardust.pl --demo
+[[http://stardust.bavl.org/demo/]]
+FOOTER::IEを使わないでください
 ----
 </html:textarea>
 
