@@ -28,13 +28,15 @@ jQuery(function(){
       }
     });
   } else if ($demo == 'ColorfulBoxes') {
+    jQuery('#color-picker').submit(function(ev){ return false; });
     jQuery.ev.loop($base+'/channel/colorful_boxes/stream/'+clientId, {
       ColorBox: function(m){
         try {
           console.log(m.toSource());
         }
         catch(e){ }
-        jQuery('#'+m.id).css({ backgroundColor: m.color }); }
+        jQuery('#'+m.id).css({ backgroundColor: m.color }); 
+      }
     });
     jQuery('td.box').mouseover(function(ev){
       var color = jQuery('#color-picker input').val() || '#ccf';
