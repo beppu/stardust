@@ -66,6 +66,12 @@ What is COMET?
 COMETって何?
 FOOTER::Server Push
 ----
+HEADER::
+AnyEvent,
+Coro,
+Continuity
+FOOTER::
+----
 HEADER::Concepts
 Messages
 Channels
@@ -162,7 +168,6 @@ HEADER::
 stardust.pl --demo
 [[http://stardust.bavl.org/demo/]]
 FOOTER::IEを使わないでください
-----
 </html:textarea>
 
 
