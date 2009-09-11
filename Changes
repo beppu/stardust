@@ -1,3 +1,7 @@
+0.05 2009-09-11
+  - made it so the colorful boxes form can't be submitted
+  - minor pod updates
+
 0.04 2009-09-08
   - trying to sort out Module::Install madness.
   - added a disgusting hack to make Tenjin cooperate.
