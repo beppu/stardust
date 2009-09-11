@@ -1,4 +1,8 @@
-0.05 2009-09-11
+0.06 2009-09-11
+  - no change; just helping miyagawa out w/ his YAPC::Asia 2009
+    lightning talk on App::CPAN::Fresh.
+
+0.05 2009-09-10
   - made it so the colorful boxes form can't be submitted
   - minor pod updates
 
