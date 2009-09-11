@@ -288,10 +288,11 @@ web applications.
 
 =head2 Message
 
+Messages are just abritrary JSON objects.
+
 =head2 Channel
 
-=head2 Long Polling
-
+Channels are where messages travel trough.
 
 
 =head1 API
@@ -356,13 +357,23 @@ They will come back to you as a JSON-encoded array of objects.
 
 =head2 nginx fastcgi + stardust
 
+TODO
+
 =head2 nginx reverse proxy + stardust
+
+TODO
 
 =head2 apache2 static + stardust
 
+TODO
+
 =head2 apache2 fastcgi + stardust
 
+TODO
+
 =head2 apache2 reverse proxy + stardust
+
+TODO
 
 =head1 SEE ALSO
 
