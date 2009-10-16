@@ -77,7 +77,6 @@ Stardust->relocate($config->{base}) if $config->{base};
 Stardust->init();
 Stardust->continue(
   port    => $config->{port},
-  docroot => 'share',
 );
 
 __END__
