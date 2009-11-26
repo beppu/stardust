@@ -365,7 +365,32 @@ TODO
 
 =head2 apache2 static + stardust
 
-TODO
+  <VirtualHost *:80>             
+                                 
+    ServerName static.local    
+    DocumentRoot /www/static.local  
+    CustomLog logs/static.local-access_log combined
+    ErrorLog  logs/static.local-error_log
+
+    <Directory "/www">         
+      # http://httpd.apache.org/docs/2.2/mod/core.html#options
+      Options Indexes FollowSymLinks  
+
+      # AllowOverride controls what directives may be placed in .htaccess files.
+      # It can be "All", "None", or any combination of the keywords:
+      #   Options FileInfo AuthConfig Limit
+      AllowOverride All
+
+      # Controls who can get stuff from this server.
+      Order allow,deny
+      Allow from all
+    </Directory>
+
+    ProxyRequests Off
+    ProxyPass        /comet http://localhost:5555/comet
+    ProxyPassReverse /comet http://localhost:5555/comet
+
+  </VirtualHost>
 
 =head2 apache2 fastcgi + stardust
 
