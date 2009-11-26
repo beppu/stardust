@@ -347,7 +347,7 @@ They will come back to you as a JSON-encoded array of objects.
     listen 80;
     server_name stardust.com.et;
     location / {
-      root   /thttpd/stardust.com.et;
+      root   /www/stardust.com.et;
       index  index.html index.htm;
     }
     location /comet {
@@ -367,28 +367,21 @@ TODO
 
   <VirtualHost *:80>             
                                  
-    ServerName static.local    
-    DocumentRoot /www/static.local  
-    CustomLog logs/static.local-access_log combined
-    ErrorLog  logs/static.local-error_log
+    ServerName stardust.com.et
+    DocumentRoot /www/stardust.com.et
+    CustomLog logs/stardust.com.et-access_log combined
+    ErrorLog  logs/stardust.com.et-error_log
 
-    <Directory "/www">         
-      # http://httpd.apache.org/docs/2.2/mod/core.html#options
+    <Directory "/www/stardust.com.et">         
       Options Indexes FollowSymLinks  
-
-      # AllowOverride controls what directives may be placed in .htaccess files.
-      # It can be "All", "None", or any combination of the keywords:
-      #   Options FileInfo AuthConfig Limit
       AllowOverride All
-
-      # Controls who can get stuff from this server.
       Order allow,deny
       Allow from all
     </Directory>
 
     ProxyRequests Off
-    ProxyPass        /comet http://localhost:5555/comet
-    ProxyPassReverse /comet http://localhost:5555/comet
+    ProxyPass        /comet http://127.0.0.1:5742/comet
+    ProxyPassReverse /comet http://127.0.0.1:5742/comet
 
   </VirtualHost>
 
