@@ -135,7 +135,7 @@ $Tenjin::CONTEXT_CLASS = 'Stardust::Demo::Views';
 
 my $template_path = File::ShareDir::dist_dir('Stardust');
 
-our $tenjin = Tenjin::Engine->new({
+our $tenjin = Tenjin->new({
   path    => [ $template_path ],
   postfix => '.html',
   cache   => 0,
