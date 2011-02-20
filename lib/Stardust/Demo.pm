@@ -1,11 +1,10 @@
 package Stardust::Demo;
 use strict;
 use warnings;
-use base 'Squatting';
+use Squatting;
 use Data::Dump 'pp';
 
 package Stardust::Demo::Controllers;
-use Squatting ':controllers';
 use AnyEvent::HTTP;
 use JSON;
 use Data::Dump 'pp';
@@ -114,7 +113,6 @@ use strict;
 use warnings;
 no  warnings 'once';
 use base 'Tenjin::Context';
-use Squatting ':views';
 use File::ShareDir;
 use Tenjin;
 use Encode;
