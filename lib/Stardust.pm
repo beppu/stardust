@@ -2,12 +2,12 @@ package Stardust;
 use 5.008;
 use strict;
 use warnings;
-use base 'Squatting';
+use Squatting;
 use IO::All;
 use Set::Object;
 use File::ShareDir ':ALL';
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 our %CONFIG = (
   debug          => 0,           # Noisy output to STDERR?
@@ -38,7 +38,6 @@ package Stardust::Controllers;
 use strict;
 use warnings;
 use aliased 'Squatting::H';
-use Squatting ':controllers';
 use Time::HiRes 'time';
 use JSON;
 use AnyEvent;
