@@ -16,4 +16,6 @@ requires        'JSON'                   => 0;
 install_script  'bin/stardust.pl';
 install_share;
 
+repository 'https://github.com/beppu/stardust';
+
 WriteAll;
